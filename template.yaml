@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Template for slow-query-notification
+
+Globals:
+  Function:
+    Timeout: 900
+
+Resources:
+  SlowQueryNotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: slow-query-notification
+      CodeUri: slow_query_notification/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Environment:
+        Variables:
+          TZ: Asia/Tokyo
+          CLOUDWATCH_REGION: #enter CloudWatch Logs region
+          SLACK_API_TOKEN: #enter Slack API token
+          SLACK_CHANNEL_ID: #enter Slack channel id
+          POSTPONEMENT_BEFORE_LOG_EXTRACTION: 1
+          MAX_RETRY_COUNT_GET_LOG: 3
+          PERIOD_LOG_EXTRACTION: 1
+          NOTIFICATION_COLOR_STANDARD: 1.0
+      Policies:
+        - Statement:
+          - Sid: EnableCreationAndManagementOfRDSCloudwatchLogEvents
+            Effect: Allow
+            Action:
+              - logs:GetLogEvents
+            Resource: #enter your log stream arn
+      Events:
+        SlowQueryNotification:
+          Type: CloudWatchLogs
+          Properties:
+            LogGroupName: #enter your log group name
+            FilterPattern: '"Query Text" "duration"'
+
