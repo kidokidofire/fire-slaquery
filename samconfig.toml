@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "slow-query-notification"
+s3_bucket = "sam-cli-source-bucket-slow-query-notification"
+s3_prefix = "slow-query-notification"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
