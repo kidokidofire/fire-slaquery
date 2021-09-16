@@ -16,6 +16,7 @@ Amazon RDS PostgreSQLでは、処理が遅いクエリの実行計画をCloudWat
 
 2. [CloudWatch LogsへのPostgreSQLログの発行を設定する](https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/USER_LogAccess.Concepts.PostgreSQL.html#USER_LogAccess.Concepts.PostgreSQL.PublishtoCloudWatchLogs)
 
+3. auto_explain.log_min_durationパラメータでslackへ通知する閾値を設定する
 ### Lambda関数の構築
 
 #### 1. [AWS SAM](https://docs.aws.amazon.com/ja_jp/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)をインストールする
@@ -49,6 +50,10 @@ Amazon RDS PostgreSQLでは、処理が遅いクエリの実行計画をCloudWat
     - NOTIFICATION_COLOR_STANDARD: Slack通知色を決めるクエリ実行時間の基準値（秒）
 
 #### 4. AWS Lambdaにビルド＆デプロイ
+```
+条件
+- python3.8の環境が構築されていること
+```
 
 ```bash
 > sam build
